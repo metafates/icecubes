@@ -45,6 +45,10 @@ func (s *State) Title() title.Title {
 	return s.title
 }
 
+func (s *State) Status() string {
+	return ""
+}
+
 func (s *State) Subtitle() string {
 	return s.subtitle
 }
