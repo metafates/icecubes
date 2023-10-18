@@ -16,7 +16,6 @@ import (
 var _ soda.State = (*State)(nil)
 
 type State struct {
-	title  title.Title
 	list   list.Model
 	keyMap keyMap
 }
@@ -59,7 +58,7 @@ func (s *State) Resize(size soda.Size) tea.Cmd {
 }
 
 func (s *State) Title() title.Title {
-	return s.title
+	return title.New("List")
 }
 
 func (s *State) Status() string {

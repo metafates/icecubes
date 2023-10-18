@@ -2,7 +2,6 @@ package loading
 
 import (
 	"github.com/charmbracelet/bubbles/spinner"
-	"github.com/metafates/soda/title"
 )
 
 type Option func(*State)
@@ -16,18 +15,6 @@ func WithMessages(messages <-chan string) Option {
 func WithMessage(message string) Option {
 	return func(state *State) {
 		state.message = message
-	}
-}
-
-func WithTitle(t title.Title) Option {
-	return func(state *State) {
-		state.title = t
-	}
-}
-
-func WithSubtitle(subtitle string) Option {
-	return func(state *State) {
-		state.subtitle = subtitle
 	}
 }
 
@@ -51,8 +38,6 @@ func WithStyleMap(styleMap StyleMap) Option {
 
 func New(options ...Option) *State {
 	state := &State{
-		title:    title.New("Loading"),
-		subtitle: "Please wait",
 		backable: func() bool {
 			return true
 		},

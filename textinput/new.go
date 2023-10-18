@@ -4,26 +4,13 @@ import (
 	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/metafates/soda/title"
 )
 
 type Option func(*State)
 
-func WithTitle(t title.Title) Option {
-	return func(state *State) {
-		state.title = t
-	}
-}
-
 func WithKeyMap(keyMap KeyMap) Option {
 	return func(state *State) {
 		state.keyMap = keyMap
-	}
-}
-
-func WithSubtitle(subtitle string) Option {
-	return func(state *State) {
-		state.subtitle = subtitle
 	}
 }
 
@@ -53,7 +40,6 @@ func WithPlaceholder(placeholder string) Option {
 
 func New(options ...Option) *State {
 	state := &State{
-		title:     title.New("Input"),
 		textInput: textinput.New(),
 		keyMap:    DefaultKeyMap(),
 		onConfirm: func(s string) tea.Cmd {

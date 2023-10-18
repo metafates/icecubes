@@ -12,9 +12,6 @@ import (
 var _ soda.State = (*State)(nil)
 
 type State struct {
-	title    title.Title
-	subtitle string
-
 	spinner spinner.Model
 
 	backable func() bool
@@ -42,7 +39,7 @@ func (s *State) Resize(size soda.Size) tea.Cmd {
 }
 
 func (s *State) Title() title.Title {
-	return s.title
+	return title.New("Loading")
 }
 
 func (s *State) Status() string {
@@ -50,7 +47,7 @@ func (s *State) Status() string {
 }
 
 func (s *State) Subtitle() string {
-	return s.subtitle
+	return ""
 }
 
 func (s *State) KeyMap() help.KeyMap {
@@ -82,10 +79,7 @@ func (s *State) viewMessage() string {
 
 func (s *State) View(mh soda.ModelHandler) string {
 	// make it more centered visually
-	height := s.size.Height - 2
-	if s.subtitle != "" {
-		height -= 2
-	}
+	height := s.size.Height - 3
 
 	width := s.size.Width
 

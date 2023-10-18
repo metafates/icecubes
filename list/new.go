@@ -6,16 +6,9 @@ import (
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/paginator"
 	"github.com/charmbracelet/lipgloss"
-	"github.com/metafates/soda/title"
 )
 
 type Option func(*State)
-
-func WithTitle(title title.Title) Option {
-	return func(state *State) {
-		state.title = title
-	}
-}
 
 func WithKeyMap(keyMap help.KeyMap) Option {
 	return func(state *State) {
@@ -25,7 +18,6 @@ func WithKeyMap(keyMap help.KeyMap) Option {
 
 func NewWithList(list list.Model, options ...Option) *State {
 	state := &State{
-		title:  title.New("List"),
 		list:   list,
 		keyMap: keyMap{list: list.KeyMap},
 	}

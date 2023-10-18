@@ -12,8 +12,6 @@ import (
 var _ soda.State = (*State)(nil)
 
 type State struct {
-	title     title.Title
-	subtitle  string
 	textInput textinput.Model
 
 	onConfirm func(string) tea.Cmd
@@ -34,11 +32,11 @@ func (s *State) Resize(size soda.Size) tea.Cmd {
 }
 
 func (s *State) Title() title.Title {
-	return s.title
+	return title.New("Edit")
 }
 
 func (s *State) Subtitle() string {
-	return s.subtitle
+	return ""
 }
 
 func (s *State) Status() string {
