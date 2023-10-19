@@ -1,6 +1,8 @@
 package textinput
 
 import (
+	"strings"
+
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/textinput"
@@ -60,14 +62,18 @@ func (s *State) Update(mh soda.ModelHandler, msg tea.Msg) tea.Cmd {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch {
-		case key.Matches(msg, s.keyMap.Confirm) && s.textInput.Err == nil && s.textInput.Value() != "":
-			return s.onConfirm(s.textInput.Value())
+		case key.Matches(msg, s.keyMap.Confirm) && s.textInput.Err == nil && s.value() != "":
+			return s.onConfirm(s.value())
 		}
 	}
 
 	var cmd tea.Cmd
 	s.textInput, cmd = s.textInput.Update(msg)
 	return cmd
+}
+
+func (s *State) value() string {
+	return strings.TrimSpace(s.textInput.Value())
 }
 
 func (s *State) View(mh soda.ModelHandler) string {
