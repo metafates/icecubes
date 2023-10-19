@@ -5,7 +5,6 @@ import (
 	"github.com/charmbracelet/bubbles/key"
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/bubbles/paginator"
-	"github.com/charmbracelet/lipgloss"
 )
 
 type Option func(*State)
@@ -43,17 +42,11 @@ func New[T any](
 		listItems[i] = convert(item)
 	}
 
-	border := lipgloss.BlockBorder()
-
 	delegate := list.NewDefaultDelegate()
 
 	delegate.Styles.FilterMatch.Underline(false)
 	delegate.Styles.NormalTitle.Bold(true)
 	delegate.Styles.SelectedTitle.Bold(true)
-	delegate.Styles.SelectedTitle.Border(border, false, false, false, true)
-	delegate.Styles.SelectedDesc.
-		Border(border, false, false, false, true).
-		Foreground(delegate.Styles.NormalDesc.GetForeground())
 
 	if delegateHeight == 1 {
 		delegate.ShowDescription = false
