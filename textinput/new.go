@@ -14,6 +14,12 @@ func WithKeyMap(keyMap KeyMap) Option {
 	}
 }
 
+func WithStyleMap(styleMap StyleMap) Option {
+	return func(state *State) {
+		state.styleMap = styleMap
+	}
+}
+
 func WithOnConfirm(onConfirm func(string) tea.Cmd) Option {
 	return func(state *State) {
 		state.onConfirm = onConfirm
@@ -42,6 +48,7 @@ func New(options ...Option) *State {
 	state := &State{
 		textInput: textinput.New(),
 		keyMap:    DefaultKeyMap(),
+		styleMap:  DefaultStyleMap(),
 		onConfirm: func(s string) tea.Cmd {
 			return nil
 		},

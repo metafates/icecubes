@@ -1,10 +1,10 @@
-package textinput
+package confirm
 
 import (
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/bubbles/key"
-	"github.com/charmbracelet/bubbles/textinput"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/metafates/soda"
 	"github.com/metafates/soda/title"
 )
@@ -12,12 +12,12 @@ import (
 var _ soda.State = (*State)(nil)
 
 type State struct {
-	textInput textinput.Model
+	prompt    string
+	onConfirm tea.Cmd
+	onCancel  tea.Cmd
+	size      soda.Size
 
-	onConfirm func(string) tea.Cmd
-
-	keyMap   KeyMap
-	styleMap StyleMap
+	keyMap KeyMap
 }
 
 func (s *State) Destroy() {
@@ -28,12 +28,12 @@ func (s *State) Backable() bool {
 }
 
 func (s *State) Resize(size soda.Size) tea.Cmd {
-	s.textInput.Width = size.Width
+	s.size = size
 	return nil
 }
 
 func (s *State) Title() title.Title {
-	return title.New("Edit")
+	return title.New("Confirm")
 }
 
 func (s *State) Subtitle() string {
@@ -41,10 +41,6 @@ func (s *State) Subtitle() string {
 }
 
 func (s *State) Status() string {
-	if err := s.textInput.Err; err != nil {
-		return s.styleMap.Error.Render(err.Error())
-	}
-
 	return ""
 }
 
@@ -53,23 +49,30 @@ func (s *State) KeyMap() help.KeyMap {
 }
 
 func (s *State) Init(mh soda.ModelHandler) tea.Cmd {
-	return tea.Batch(textinput.Blink, s.textInput.Focus())
+	return nil
 }
 
 func (s *State) Update(mh soda.ModelHandler, msg tea.Msg) tea.Cmd {
 	switch msg := msg.(type) {
 	case tea.KeyMsg:
 		switch {
-		case key.Matches(msg, s.keyMap.Confirm) && s.textInput.Err == nil && s.textInput.Value() != "":
-			return s.onConfirm(s.textInput.Value())
+		case key.Matches(msg, s.keyMap.Confirm):
+			return s.onConfirm
+		case key.Matches(msg, s.keyMap.Cancel):
+			return s.onCancel
 		}
 	}
 
-	var cmd tea.Cmd
-	s.textInput, cmd = s.textInput.Update(msg)
-	return cmd
+	return nil
 }
 
 func (s *State) View(mh soda.ModelHandler) string {
-	return s.textInput.View()
+	// make it more centered visually
+	height := s.size.Height
+
+	width := s.size.Width
+
+	style := lipgloss.NewStyle().Width(width).Height(height).Align(lipgloss.Center, lipgloss.Center)
+
+	return style.Render(s.prompt)
 }
